@@ -6,6 +6,7 @@ import { ListingComponent } from './listing/listing.component';
 import { AddComponent } from './add/add.component';
 import { UpdateComponent } from './update/update.component';
 import { ViewComponent } from './view/view.component';
+import { MenuBarComponent } from './menu-bar/menu-bar.component';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ViewComponent } from './view/view.component';
     ListingComponent,
     AddComponent,
     UpdateComponent,
-    ViewComponent
+    ViewComponent,
+    MenuBarComponent
   ],
   imports: [
     CommonModule,
