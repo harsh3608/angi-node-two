@@ -1,17 +1,59 @@
 <app-menu-bar></app-menu-bar>
 
 <div class="container border mt-5 p-3">
-<table class="table">
+  <div class="d-flex justify-content-between">
+    <h2>Students</h2>
+    <button class="btn btn-outline-primary rounded-circle">
+      <span class="material-icons p-1">
+        add
+      </span>
+    </button>
+  </div>
+
+  <hr>
+  <table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Semester</th>
+        <th scope="col">Branch</th>
+        <th scope="col">Mobile</th>
+        <th scope="col">Result</th>
+        <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
+
+      <tr *ngFor="let student of students">
+        <td>{{student.Id}}</td>
+        <td>{{student.Name}}</td>
+        <td>{{student.Semester}}</td>
+        <td>{{student.Branch}}</td>
+        <td>{{student.Mobile}}</td>
+        <td>{{student.Result}}</td>
+        <td>
+          <button class="btn btn-outline-info rounded-circle mr-1" style="scale: 0.7;">
+            <span class="material-icons p-1">
+              visibility
+            </span>
+          </button>
+
+          <button class="btn btn-outline-success rounded-circle mr-1" style="scale: 0.7;">
+            <span class="material-icons p-1">
+              edit
+            </span>
+          </button>
+
+          <button class="btn btn-outline-danger rounded-circle mr-1" style="scale: 0.7;">
+            <span class="material-icons p-1">
+              delete
+            </span>
+          </button>
+        </td>
+      </tr>
+
+      <!-- <tr>
         <th scope="row">1</th>
         <td>Mark</td>
         <td>Otto</td>
@@ -27,16 +69,7 @@
         <th scope="row">3</th>
         <td colspan="2">Larry the Bird</td>
         <td>@twitter</td>
-      </tr>
+      </tr> -->
     </tbody>
   </table>
 </div>
-
-
-
-
-
-
-
-
-

@@ -1,5 +1,9 @@
 const express = require("express");
 const mysql = require('mysql');
+const cors = require('cors');
+
+
+
 
 const app = express();
 app.use(express.json());
@@ -37,6 +41,10 @@ connection.connect((err) => {
   // You can perform database operations here
 });
 
+app.use(cors({
+  origin: '*'
+}));
+
 app.listen(PORT, () => {
   console.log("Server Listening on PORT:", PORT);
 });
@@ -60,6 +68,26 @@ app.get("/students/get-all", async (request, response) => {
     response.status(500).json({ error: 'An error occurred.' });
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Close the connection when you're done
 process.on('SIGINT', () => {
