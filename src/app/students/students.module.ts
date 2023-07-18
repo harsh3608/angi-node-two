@@ -7,6 +7,7 @@ import { AddComponent } from './add/add.component';
 import { UpdateComponent } from './update/update.component';
 import { ViewComponent } from './view/view.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -15,11 +16,12 @@ import { MenuBarComponent } from './menu-bar/menu-bar.component';
     AddComponent,
     UpdateComponent,
     ViewComponent,
-    MenuBarComponent
+    MenuBarComponent,
   ],
   imports: [
     CommonModule,
-    StudentsRoutingModule
+    StudentsRoutingModule,
+    HttpClientModule
   ]
 })
 export class StudentsModule { }
