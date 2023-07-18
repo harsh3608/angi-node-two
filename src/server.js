@@ -1,21 +1,30 @@
 const express = require("express");
 const mysql = require('mysql');
-//const sql = require("mssql/msnodesqlv8");
 
 const app = express();
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
-
-
-const connection = mysql.createConnection({
+var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'HarshPatel@2023',
   database: 'second',
+  insecureAuth: true
 });
 
+function executeQuery(query) {
+  return new Promise((resolve, reject) => {
+    connection.query(query, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
 
 // Connect to the MySQL server
 connection.connect((err) => {
@@ -27,37 +36,6 @@ connection.connect((err) => {
   console.log('Connected to MySQL database!');
   // You can perform database operations here
 });
-
-// Close the connection when you're done
-connection.end();
-
-
-// const config = {
-//   server: 'DESKTOP-E4P3JV3\\SQLEXPRESS',
-//   database: "NodeJSDatabase",
-//   driver: "SQL Server ODBC DSN",
-//   options: {
-//     encrypt: true, // If your SQL Server uses SSL
-//     trustedConnection: true, // Use Windows Authentication
-//   },
-// };
-
-// const userTable = '[NodeJSDatabase].[dbo].[Students]';
-
-// async function executeQuery(query) {
-//   try {
-//     await sql.connect(config);
-//     const result = await sql.query(query);
-//     return result.recordset;
-//   } catch (err) {
-//     console.error("Error executing query:", err);
-//     throw err;
-//   } finally {
-//     sql.close();
-//   }
-// }
-
-
 
 app.listen(PORT, () => {
   console.log("Server Listening on PORT:", PORT);
@@ -71,13 +49,26 @@ app.get("/status", (request, response) => {
   response.send(status);
 });
 
-app.get("/students/get-all",async  (request, response) => {
-   try {
-      const query = 'SELECT * FROM [NodeJSDatabase].[dbo].[Students]';
-      //const users = await executeQuery(query);
-      response.json(users);
-      console.log(query);
-    } catch (err) {
-      response.status(500).json({ error: 'An error occurred.' });
+app.get("/students/get-all", async (request, response) => {
+  try {
+    const query = 'SELECT * FROM second.students';
+    const users = await executeQuery(query);
+    response.json(users);
+    console.log(query);
+  } catch (err) {
+    console.error(err);
+    response.status(500).json({ error: 'An error occurred.' });
+  }
+});
+
+// Close the connection when you're done
+process.on('SIGINT', () => {
+  connection.end((err) => {
+    if (err) {
+      console.error('Error closing MySQL connection:', err);
+      return;
     }
- })
+    console.log('MySQL connection closed.');
+    process.exit(0);
+  });
+});
