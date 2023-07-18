@@ -75,12 +75,12 @@ app.get("/students/get-all", async (request, response) => {
 });
 
 // POST route to add a student to the database
-app.post('/students', async (req, res) => {
+app.post('/students/add', async (req, res) => {
   const student = req.body;
-  
+
   try {
     // Insert the student record into the database
-    await executeQuery('INSERT INTO students SET ?', student);
+    await executeQuery(`INSERT INTO second.students (Id, Name, Semester, Branch, Mobile, Result) VALUES ( ${student.Id}, '${student.Name}', '${student.Semester}', '${student.Branch}', ${student.Mobile}, '${student.Result}' )`);
     console.log('Student added to the database!');
     res.status(200).json({ message: 'Student added successfully!' });
   } catch (error) {
@@ -90,6 +90,26 @@ app.post('/students', async (req, res) => {
 });
 
 
+// GET route to fetch a student by ID
+app.get('/students/:id', async (req, res) => {
+  const studentId = req.params.id;
+
+  try {
+    // Fetch the student record from the database
+    const query = `SELECT * FROM second.students WHERE id = ${studentId}`;
+    const result = await executeQuery(query);
+
+    if (result.length === 0) {
+      res.status(404).json({ error: 'Student not found.' });
+    } else {
+      const student = result[0];
+      res.status(200).json({ student });
+    }
+  } catch (error) {
+    console.error('Error retrieving student: ', error);
+    res.status(500).json({ error: 'Failed to fetch student.' });
+  }
+});
 
 
 
