@@ -1,12 +1,17 @@
 const express = require("express");
 const mysql = require('mysql');
 const cors = require('cors');
-
+const bodyParser = require('body-parser');
 
 
 
 const app = express();
 app.use(express.json());
+
+// Configure body-parser middleware to parse request bodies
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 
 const PORT = process.env.PORT || 3000;
 
@@ -62,14 +67,27 @@ app.get("/students/get-all", async (request, response) => {
     const query = 'SELECT * FROM second.students';
     const users = await executeQuery(query);
     response.json(users);
-    console.log(query);
+    //console.log(query);
   } catch (err) {
     console.error(err);
     response.status(500).json({ error: 'An error occurred.' });
   }
 });
 
-
+// POST route to add a student to the database
+app.post('/students', async (req, res) => {
+  const student = req.body;
+  
+  try {
+    // Insert the student record into the database
+    await executeQuery('INSERT INTO students SET ?', student);
+    console.log('Student added to the database!');
+    res.status(200).json({ message: 'Student added successfully!' });
+  } catch (error) {
+    console.error('Error inserting student: ', error);
+    res.status(500).json({ error: 'Failed to add student.' });
+  }
+});
 
 
 
