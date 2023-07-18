@@ -13,7 +13,7 @@ export class StudentService {
   ) { }
 
   GetAllStudents(): Observable<Student[]>{
-    return this.http.get<Student[]>('http://localhost:3000/students/get-all');
+    return this.http.get<Student[]>('http://localhost:3000/students/get-all'); 
   }
 
 

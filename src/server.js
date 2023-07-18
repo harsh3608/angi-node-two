@@ -112,8 +112,70 @@ app.get('/students/:id', async (req, res) => {
 });
 
 
+// PUT route to update a student by ID
+app.put('/students/update/:id', async (req, res) => {
+  const studentId = req.params.id;
+  const updatedData = req.body;
+
+  try {
+    // Check if the student exists
+    const checkQuery = `SELECT * FROM students WHERE id = ${studentId}`;
+    const checkResult = await executeQuery(checkQuery);
+
+    if (checkResult.length === 0) {
+      res.status(404).json({ error: 'Student not found.' });
+      return;
+    }
+
+    // Construct the SET clause for the update query
+    let setClause = '';
+    for (const key in updatedData) {
+      if (setClause !== '') {
+        setClause += ', ';
+      }
+      setClause += `${key} = '${updatedData[key]}'`;
+    }
+
+    // Update the student record in the database
+    const updateQuery = `UPDATE students SET ${setClause} WHERE id = ${studentId}`;
+    await executeQuery(updateQuery);
+
+    console.log('Student record updated!');
+    res.status(200).json({ message: 'Student record updated successfully!' });
+  } catch (error) {
+    console.error('Error updating student: ', error);
+    res.status(500).json({ error: 'Failed to update student record.' });
+  }
+});
 
 
+//DELETE Route to delete a student by id
+app.delete('/students/delete/:id', async (req,res)=> {
+  const studentId = req.params.id;
+
+  try {
+    // Check if the student exists
+    const checkQuery = `SELECT * FROM second.students WHERE id = ${studentId}`;
+    const checkResult = await executeQuery(checkQuery);
+
+    if (checkResult.length === 0) {
+      res.status(404).json({ error: 'Student not found.' });
+      return;
+    }
+
+    // Delete the student record in the database
+    const deleteQuery = `DELETE FROM second.students WHERE id = ${studentId}`;
+    await executeQuery(deleteQuery);
+
+    console.log('Student record deleted!');
+    res.status(200).json({ message: 'Student record deleted successfully!' });
+
+
+  } catch (error) {
+    console.error('Error deleting student: ', error);
+    res.status(500).json({ error: 'Failed to update student record.' });
+  }
+})
 
 
 
