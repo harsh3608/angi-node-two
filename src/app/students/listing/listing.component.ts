@@ -25,7 +25,6 @@ export class ListingComponent implements OnInit{
     this.studentService.GetAllStudents().subscribe(
       (res) => {
         this.students = res;
-        console.log(this.students);
       }
     );
   }
