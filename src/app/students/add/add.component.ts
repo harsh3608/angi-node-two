@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Student } from '../shared/models/student-models';
+import { StudentService } from '../shared/services/student.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add',
@@ -12,13 +14,14 @@ export class AddComponent implements OnInit{
   addRequest!: Student;
 
   constructor(
-
+    private studentService: StudentService,
+    private dialogRef: MatDialogRef<AddComponent>,
   ) {}
 
   ngOnInit(): void {
     
     this.addStudentForm = new FormGroup({
-      Id: new FormControl(this.GetRandomNumber),
+      Id: new FormControl(this.GetRandomNumber()),
       Name: new FormControl(),
       Semester: new FormControl(),
       Branch: new FormControl(),
@@ -32,7 +35,13 @@ export class AddComponent implements OnInit{
   }
 
   SubmitForm(){
-    console.log(this.addStudentForm.value);
+    this.addRequest = this.addStudentForm.value
+    this.studentService.AddStudent(this.addRequest).subscribe(
+      (res) => {
+        console.log(res.message);
+        this.dialogRef.close();
+      }
+    )
     
   }
 

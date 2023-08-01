@@ -17,6 +17,7 @@ export class ListingComponent implements OnInit{
     private studentService: StudentService,
     private title: Title,
     public dialog: MatDialog,
+    
   ) { }
 
   ngOnInit(): void {
@@ -26,7 +27,7 @@ export class ListingComponent implements OnInit{
         this.students = res;
         console.log(this.students);
       }
-    )
+    );
   }
 
   OpenAddDialog() {
@@ -36,6 +37,11 @@ export class ListingComponent implements OnInit{
       }
     );
     dialogRef.afterClosed().subscribe(result => {
+      this.studentService.GetAllStudents().subscribe(
+        (res) => {
+          this.students = res;
+        }
+      );
     });
   }
 
